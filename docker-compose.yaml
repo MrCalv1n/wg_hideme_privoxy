@@ -1,0 +1,28 @@
+version: '3'
+services:
+  hideme_wg_oracle_arm64:
+    image: alturismo/wg_hideme_privoxy:latest
+    container_name: hideme_wg_oracle_arm64
+    network_mode: bridge
+    logging:
+      options:
+        max-size: 10m
+        max-file: '3'
+    environment:
+      - TZ=Europe/Madrid
+      - LOCAL_NET=<YOUR LOCAL IP ADDR eg. 192.168.1.0/24>
+      - HIDEME_SERVER=free-es
+      - HIDEME_USER=${HIDEME_USER}
+      - HIDEME_PASS=${HIDEME_PASS}
+    ports:
+      - "8080:8080"
+      - "1080:1080"
+    volumes:
+      - /config/hideme/:/config:rw
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
+    privileged: true
